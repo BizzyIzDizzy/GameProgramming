@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationfw.core;
+package info.bizzyizdizzy.animationframework.core;
 
 import java.awt.Color;
 import java.awt.Dimension;
