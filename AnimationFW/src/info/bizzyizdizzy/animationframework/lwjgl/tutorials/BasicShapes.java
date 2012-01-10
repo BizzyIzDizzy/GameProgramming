@@ -54,9 +54,15 @@ public class BasicShapes {
 			angle += 0.1*delta;
 		}
 		
-		if(cameraAngle > 10 || cameraAngle < -10){
-			shift = !shift;
+		// if cameraAngle is to big start to decrease it
+		if(cameraAngle > 10){
+			shift = true;
 		}
+		// if cameraAngle is to small start to increase it
+		if(cameraAngle < -10){
+			shift = false;
+		}
+		
 		updateFPS();
 	}
 	
