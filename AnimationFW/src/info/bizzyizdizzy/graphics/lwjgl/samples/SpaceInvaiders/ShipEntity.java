@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples.SpaceInvaiders;
+package info.bizzyizdizzy.graphics.lwjgl.samples.SpaceInvaiders;
 
 /**
  * The entity that represents the players ship

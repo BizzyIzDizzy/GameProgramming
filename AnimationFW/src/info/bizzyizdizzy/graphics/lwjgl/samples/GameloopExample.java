@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples;
+package info.bizzyizdizzy.graphics.lwjgl.samples;
 
 public class GameloopExample {
 	

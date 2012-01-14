@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples.SpaceInvaiders;
+package info.bizzyizdizzy.graphics.lwjgl.samples.SpaceInvaiders;
 
 /**
  * An entity which represents one of our space invader aliens.

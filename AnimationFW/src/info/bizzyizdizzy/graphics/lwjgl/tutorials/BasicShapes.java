@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.tutorials;
+package info.bizzyizdizzy.graphics.lwjgl.tutorials;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;

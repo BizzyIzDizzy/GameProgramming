@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples.SpaceInvaiders;
+package info.bizzyizdizzy.graphics.lwjgl.samples.SpaceInvaiders;
 
 import java.util.ArrayList;
 
@@ -86,7 +86,7 @@ public class Game {
 	private long					lastFire;
 
 	/** The interval between our players shot (ms) */
-	private long					firingInterval				= 500;
+	private long					firingInterval				= 250;
 
 	/** The number of aliens left on the screen */
 	private int						alienCount;

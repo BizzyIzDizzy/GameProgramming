@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples.SpaceInvaiders;
+package info.bizzyizdizzy.graphics.lwjgl.samples.SpaceInvaiders;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package info.bizzyizdizzy.animationframework.lwjgl.samples.SpaceInvaiders;
+package info.bizzyizdizzy.graphics.lwjgl.samples.SpaceInvaiders;
 
 /**
  * An entity representing a shot fired by the player's ship
