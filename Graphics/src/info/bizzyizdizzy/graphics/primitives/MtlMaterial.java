@@ -1,5 +1,5 @@
 package info.bizzyizdizzy.graphics.primitives;
 
-public class ObjFileObject {
+public class MtlMaterial {
 
 }

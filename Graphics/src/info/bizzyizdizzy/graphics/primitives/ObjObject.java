@@ -1,5 +1,5 @@
 package info.bizzyizdizzy.graphics.primitives;
 
-public class ObjFileGroup {
+public class ObjObject {
 
 }
