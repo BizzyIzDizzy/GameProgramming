@@ -19,7 +19,7 @@ import java.util.List;
  * It specifies the start of a material description and assigns a name to the<br>
  * material. An .mtl file must have one newmtl statement at the start of<br>
  * each material description.<br>
- * @author uros
+ * @author Uroš Marolt
  *
  */
 public class MtlNewmtl {

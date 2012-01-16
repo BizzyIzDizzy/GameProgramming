@@ -7,9 +7,10 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Utils"/>
 	<classpathentry kind="var" path="COMMON_LIB/lwjgl-2.8.2/jar/lwjgl.jar" sourcepath="/COMMON_LIB/lwjgl-2.8.2/lwjgl-source-2.8.2.zip">
 		<attributes>
-			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="AnimationFW/lib/windows"/>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Graphics/lib/windows"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="COMMON_LIB/lwjgl-2.8.2/jar/lwjgl_util.jar" sourcepath="/COMMON_LIB/lwjgl-2.8.2/lwjgl-source-2.8.2.zip"/>
+	<classpathentry kind="var" path="COMMON_LIB/commons-io-2.0.1.jar" sourcepath="/COMMON_LIB/commons-io-2.0.1-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

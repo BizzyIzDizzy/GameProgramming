@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 /**
  * <b>Material texture map</b><br>
  * Texture map statements modify the material parameters of a surface by<br>
@@ -90,9 +88,7 @@ import org.apache.log4j.Logger;
  * @author Uroš Marolt
  *
  */
-public class MtlTextureMapObject {
-	
-	private Logger logger = Logger.getLogger(this.getClass());
+public abstract class MtlTextureMapObject extends MtlObject{
 	
 	public static Map<String, Class<? extends MtlTextureMapObject>> TEXTURE_MAP_OBJECTS = new HashMap<String, Class<? extends MtlTextureMapObject>>();
 	static{
@@ -106,21 +102,22 @@ public class MtlTextureMapObject {
 		TEXTURE_MAP_OBJECTS.put("bump", MtlBump.class);
 	}
 	
-	private String statementName;
-	
+	/**
+	 * @see MtlObject#getStatementName()
+	 * @param statementName
+	 */
 	public MtlTextureMapObject(String statementName){
-		this.statementName = statementName;
+		super(statementName);
 	}
 	
-	public String getStatementName(){
-		if(this.statementName == null){
-			logger.warn("statementName is null!");
-			return "";
+	protected abstract void formatParams(List<String> params);
+	
+	public String toString(){
+		String returnString = super.toString()+"\n";
+		for(String s : TEXTURE_MAP_OBJECTS.keySet()){
+			returnString += s+"\n";
 		}
-		return this.statementName;
-	}
-	
-	public void formatParameters(List<String> params){
-		logger.error("You can not format parameters of this base class!");
+		
+		return returnString;
 	}
 }

@@ -1,10 +1,18 @@
 package info.bizzyizdizzy.graphics.primitives.mtl;
 
+import java.util.List;
+
 public class MtlMapka extends MtlTextureMapObject{
 
-	public MtlMapka(String statementName) {
+	public MtlMapka(String statementName, List<String> params) {
 		super(statementName);
-		// TODO Auto-generated constructor stub
+		formatParameters(params);
+	}
+
+	@Override
+	protected void formatParams(List<String> params) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

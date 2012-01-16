@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 /**
  * <b>Material color and illumination</b><br>
  * The statements in this section specify color, transparency, and<br>
@@ -18,8 +16,7 @@ import org.apache.log4j.Logger;
  * @author Uroš Marolt
  *
  */
-public class MtlColorIllumObject {
-	private Logger logger = Logger.getLogger(this.getClass());
+public abstract class MtlColorIllumObject extends MtlObject{
 	
 	public static Map<String, Class<? extends MtlColorIllumObject> > COLOR_ILLUM_OBJECTS = new HashMap<String, Class<? extends MtlColorIllumObject>>();
 	static{
@@ -34,21 +31,22 @@ public class MtlColorIllumObject {
 		COLOR_ILLUM_OBJECTS.put("Ni", MtlNi.class);
 	}
 	
-	private String statementName;
-	
+	/**
+	 * @see MtlObject#getStatementName()
+	 * @param statementName
+	 */
 	public MtlColorIllumObject(String statementName){
-		this.statementName = statementName;
+		super(statementName);
 	}
 	
-	public String getStatementName(){
-		if(this.statementName == null){
-			logger.warn("statementName is null!");
-			return "";
+	protected abstract void formatParams(List<String> params);
+	
+	public String toString(){
+		String returnString = super.toString()+"\n";
+		for(String s : COLOR_ILLUM_OBJECTS.keySet()){
+			returnString += s+"\n";
 		}
-		return this.statementName;
-	}
-	
-	public void formatParameters(List<String> params){
-		logger.error("You can not format parameters of this base class!");
+		
+		return returnString;
 	}
 }

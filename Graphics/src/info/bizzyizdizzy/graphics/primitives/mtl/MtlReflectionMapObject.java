@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 /**
  * <b>Material reflection map</b><br>
  * A reflection map is an environment that simulates reflections in<br>
@@ -35,29 +33,29 @@ import org.apache.log4j.Logger;
  * @author Uroš Marolt
  *
  */
-public class MtlReflectionMapObject {
-	private Logger logger = Logger.getLogger(this.getClass());
-	
+public abstract class MtlReflectionMapObject extends MtlObject{
+		
 	public static Map<String, Class<? extends MtlReflectionMapObject>> REFLECTION_MAP_OBJECTS = new HashMap<String,Class<? extends MtlReflectionMapObject>>();
 	static{
 		REFLECTION_MAP_OBJECTS.put("refl", MtlRefl.class);
 	}
-	
-	private String statementName;
-	
+		
+	/**
+	 * @see MtlObject#getStatementName()
+	 * @param statementName
+	 */
 	public MtlReflectionMapObject(String statementName){
-		this.statementName = statementName;
+		super(statementName);
 	}
 	
-	public String getStatementName(){
-		if(this.statementName == null){
-			logger.warn("statementName is null!");
-			return "";
+	protected abstract void formatParams(List<String> params);
+	
+	public String toString(){
+		String returnString = super.toString()+"\n";
+		for(String s : REFLECTION_MAP_OBJECTS.keySet()){
+			returnString += s+"\n";
 		}
-		return this.statementName;
-	}
-	
-	public void formatParameters(List<String> params){
-		logger.error("You can not format parameters of this base class!");
+		
+		return returnString;
 	}
 }

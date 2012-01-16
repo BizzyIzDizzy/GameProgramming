@@ -1,5 +1,11 @@
 package info.bizzyizdizzy.graphics.lwjgl.tutorials;
 
+import java.util.List;
+
+import info.bizzyizdizzy.graphics.core.loaders.ObjFileLoader;
+import info.bizzyizdizzy.graphics.primitives.Vertex4f;
+import info.bizzyizdizzy.graphics.primitives.obj.ObjFace;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
@@ -9,7 +15,9 @@ import org.lwjgl.util.glu.GLU;
 import static org.lwjgl.opengl.GL11.*;
 
 public class BasicShapes {
-	
+	private List<ObjFace> cube;
+	private List<ObjFace> cone;
+	private List<ObjFace> monkey;
 	int width = 800;
 	int height = 600;
 	
@@ -22,6 +30,9 @@ public class BasicShapes {
 	long lastFPS;
 		
 	public void start(){
+		cube = ObjFileLoader.loadObjFile("cube.obj");
+		cone = ObjFileLoader.loadObjFile("cone.obj");
+		monkey = ObjFileLoader.loadObjFile("monkey.obj");
 		try {
 			Display.setDisplayMode(new DisplayMode(width,height));
 			Display.create();
@@ -39,7 +50,7 @@ public class BasicShapes {
 			update(delta);
 			renderGL();
 			Display.update();
-			Display.sync(100);
+			Display.sync(5000);
 		}
 		
 		Display.destroy();
@@ -84,49 +95,52 @@ public class BasicShapes {
 	    
 	    glPushMatrix();
 	    glTranslatef(0f,-1f,0f);
-	    glRotatef(angle, 0.0f,0.0f,1.0f);
-	    glBegin(GL_QUADS); //Begin quadrilateral coordinates
-	    {
-	    	//Trapezoid
-		    glVertex3f(-0.7f, -0.5f, 0f);
-		    glVertex3f(0.7f, -0.5f, 0f);
-		    glVertex3f(0.4f, 0.5f, 0f);
-		    glVertex3f(-0.4f, 0.5f, 0f);
-	    }
+	    glRotatef(angle, 1.0f,2.0f,3.0f);
+	    glColor3f(1f, 0f, 0f);
+	    glScalef(0.5f,0.5f,0.5f);
+	    for(ObjFace face : cube){
+	    	glBegin(GL_POLYGON);
+    		{
+    			for(Vertex4f vertex : face.vertices){
+    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			}
+    		}
+    		glEnd();	    	
+	    }	    
 	    glEnd(); //End quadrilateral coordinates
 	    glPopMatrix();
 	    
 	    glPushMatrix();
 	    glTranslatef(1f,1f,0f);
-	    glRotatef(angle, 0.0f,1.0f,0.0f);
+	    glRotatef(angle, 1.0f,2.0f,3.0f);
+	    glColor3f(0f, 1f, 0f);
 	    glScalef(0.7f,0.7f,0.7f);
-	    glBegin(GL_TRIANGLES); //Begin triangle coordinates
-	    
-	    //Pentagon
-	    glVertex3f(-0.5f, -0.5f, 0f);
-	    glVertex3f(0.5f, -0.5f, 0f);
-	    glVertex3f(-0.5f, 0.0f, 0f);
-	    
-	    glVertex3f(-0.5f, 0.0f, 0f);
-	    glVertex3f(0.5f, -0.5f, 0f);
-	    glVertex3f(0.5f, 0.0f, 0f);
-	    
-	    glVertex3f(-0.5f, 0.0f, 0f);
-	    glVertex3f(0.5f, 0.0f, 0f);
-	    glVertex3f(0.0f, 0.5f, 0f);
-	    glEnd();
+	    for(ObjFace face : cone){
+	    	glBegin(GL_POLYGON);
+    		{
+    			for(Vertex4f vertex : face.vertices){
+    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			}
+    		}
+    		glEnd();	    	
+	    }	   
 	    glPopMatrix();
 	    
 	    glPushMatrix();
 	    glTranslatef(-1f,1f,0f);
 	    glRotatef(angle, 1.0f,2.0f,3.0f);
-	    glBegin(GL_TRIANGLES);
-	    //Triangle
-	    glVertex3f(0.5f, -0.5f, 0f);
-	    glVertex3f(0.0f, 0.5f, 0f);
-	    glVertex3f(-0.5f, -0.5f, 0f);	    
-	    glEnd(); //End triangle coordinates
-	    glPopMatrix();
+	    glColor3f(0f, 0f, 1f);
+	    glScalef(0.7f,0.7f,0.7f);
+	    for(ObjFace face : monkey){
+	    	glBegin(GL_POLYGON);
+    		{
+    			for(Vertex4f vertex : face.vertices){
+    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			}
+    		}
+    		glEnd();	    	
+	    }	   
+	    glPopMatrix();	
 	}
 	
 	public void setDisplayMode(int width, int height, boolean fullscreen){
