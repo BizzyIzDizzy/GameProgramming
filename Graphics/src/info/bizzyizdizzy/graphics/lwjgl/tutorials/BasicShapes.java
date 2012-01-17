@@ -1,25 +1,32 @@
 package info.bizzyizdizzy.graphics.lwjgl.tutorials;
 
-import java.util.List;
-
+import static org.lwjgl.opengl.GL11.*;
 import info.bizzyizdizzy.graphics.core.loaders.ObjFileLoader;
 import info.bizzyizdizzy.graphics.primitives.Vertex4f;
 import info.bizzyizdizzy.graphics.primitives.obj.ObjFace;
 
+import java.nio.FloatBuffer;
+import java.util.List;
+
+import org.lwjgl.BufferUtils;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class BasicShapes {
-	private List<ObjFace> cube;
+	private List<ObjFace> sphere;
 	private List<ObjFace> cone;
 	private List<ObjFace> monkey;
 	int width = 800;
 	int height = 600;
+	
+	private FloatBuffer matSpecular;
+	private FloatBuffer lightPosition;
+	private FloatBuffer whiteLight; 
+	private FloatBuffer lModelAmbient;
 	
 	float angle = 30f;
 	float cameraAngle = 0f;
@@ -30,12 +37,12 @@ public class BasicShapes {
 	long lastFPS;
 		
 	public void start(){
-		cube = ObjFileLoader.loadObjFile("cube.obj");
+		sphere = ObjFileLoader.loadObjFile("sphere.obj");
 		cone = ObjFileLoader.loadObjFile("cone.obj");
 		monkey = ObjFileLoader.loadObjFile("monkey.obj");
 		try {
 			Display.setDisplayMode(new DisplayMode(width,height));
-			Display.create();
+			Display.create(new PixelFormat(24, 8, 24, 0, 0));
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 			System.exit(0);
@@ -78,11 +85,53 @@ public class BasicShapes {
 	}
 	
 	private void initGL(){
-		glViewport(0, 0, width, height);
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		GLU.gluPerspective(45.0f, (float)width/height, 1.0f, 200.0f);
-		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.5f, 0.5f, 0.5f, 0.0f); // sets background to grey
+		glClearDepth(1.0f); // clear depth buffer
+		glEnable(GL_DEPTH_TEST); // Enables depth testing
+		glDepthFunc(GL_LEQUAL); // sets the type of test to use for depth testing
+		glMatrixMode(GL_PROJECTION); // sets the matrix mode to project
+		
+		float fovy = 45.0f;
+		float aspect = width / height;
+		float zNear = 0.1f;
+		float zFar = 100.0f;
+		GLU.gluPerspective(fovy, aspect, zNear, zFar);
+		
+		glMatrixMode(GL_MODELVIEW);
+		
+		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST); 
+		
+		//----------- Variables & method calls added for Lighting Test -----------//
+		initLightArrays();
+		glShadeModel(GL_SMOOTH);
+		glMaterial(GL_FRONT, GL_SPECULAR, matSpecular);				// sets specular material color
+		glMaterialf(GL_FRONT, GL_SHININESS, 50.0f);					// sets shininess
+		
+		glLight(GL_LIGHT0, GL_POSITION, lightPosition);				// sets light position
+		glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);				// sets specular light to white
+		glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);					// sets diffuse light to white
+		glLightModel(GL_LIGHT_MODEL_AMBIENT, lModelAmbient);		// global ambient light 
+		
+		glEnable(GL_LIGHTING);										// enables lighting
+		glEnable(GL_LIGHT0);										// enables light0
+		
+		glEnable(GL_COLOR_MATERIAL);								// enables opengl to use glColor3f to define material color
+		glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);			// tell opengl glColor3f effects the ambient and diffuse properties of material
+		//----------- END: Variables & method calls added for Lighting Test -----------//
+	}
+	
+	private void initLightArrays(){
+		matSpecular = BufferUtils.createFloatBuffer(4);
+		matSpecular.put(1.0f).put(1.0f).put(1.0f).put(1.0f).flip();
+		
+		lightPosition = BufferUtils.createFloatBuffer(4);
+		lightPosition.put(2.0f).put(1.0f).put(1.0f).put(0.0f).flip();
+		
+		whiteLight = BufferUtils.createFloatBuffer(4);
+		whiteLight.put(0.1f).put(0.1f).put(0.1f).put(0.01f).flip();
+		
+		lModelAmbient = BufferUtils.createFloatBuffer(4);
+		lModelAmbient.put(0.5f).put(0.5f).put(0.5f).put(1.0f).flip();
 	}
 	
 	private void renderGL(){
@@ -98,11 +147,16 @@ public class BasicShapes {
 	    glRotatef(angle, 1.0f,2.0f,3.0f);
 	    glColor3f(1f, 0f, 0f);
 	    glScalef(0.5f,0.5f,0.5f);
-	    for(ObjFace face : cube){
+	    for(ObjFace face : sphere){
 	    	glBegin(GL_POLYGON);
     		{
-    			for(Vertex4f vertex : face.vertices){
-    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			if(face.vertices.size() == face.normals.size()){
+    				for(int x = 0; x<face.vertices.size(); x++){
+        				Vertex4f vertex = face.vertices.get(x);
+        				Vertex4f normal = face.normals.get(x);
+        				glNormal3f(normal.x, normal.y, normal.z);
+        				glVertex3f(vertex.x, vertex.y, vertex.z);
+        			}
     			}
     		}
     		glEnd();	    	
@@ -118,8 +172,13 @@ public class BasicShapes {
 	    for(ObjFace face : cone){
 	    	glBegin(GL_POLYGON);
     		{
-    			for(Vertex4f vertex : face.vertices){
-    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			if(face.vertices.size() == face.normals.size()){
+    				for(int x = 0; x<face.vertices.size(); x++){
+        				Vertex4f vertex = face.vertices.get(x);
+        				Vertex4f normal = face.normals.get(x);
+        				glNormal3f(normal.x, normal.y, normal.z);
+        				glVertex3f(vertex.x, vertex.y, vertex.z);
+        			}
     			}
     		}
     		glEnd();	    	
@@ -129,13 +188,19 @@ public class BasicShapes {
 	    glPushMatrix();
 	    glTranslatef(-1f,1f,0f);
 	    glRotatef(angle, 1.0f,2.0f,3.0f);
+	    glRotatef(110,1f,0f,0f);
 	    glColor3f(0f, 0f, 1f);
 	    glScalef(0.7f,0.7f,0.7f);
 	    for(ObjFace face : monkey){
 	    	glBegin(GL_POLYGON);
     		{
-    			for(Vertex4f vertex : face.vertices){
-    				glVertex3f(vertex.x, vertex.y, vertex.z);
+    			if(face.vertices.size() == face.normals.size()){
+    				for(int x = 0; x<face.vertices.size(); x++){
+        				Vertex4f vertex = face.vertices.get(x);
+        				Vertex4f normal = face.normals.get(x);
+        				glNormal3f(normal.x, normal.y, normal.z);
+        				glVertex3f(vertex.x, vertex.y, vertex.z);
+        			}
     			}
     		}
     		glEnd();	    	
