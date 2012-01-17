@@ -17,7 +17,7 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
 public class BasicShapes {
-	private List<ObjFace> sphere;
+	private List<ObjFace> cylinder;
 	private List<ObjFace> cone;
 	private List<ObjFace> monkey;
 	int width = 800;
@@ -37,7 +37,7 @@ public class BasicShapes {
 	long lastFPS;
 		
 	public void start(){
-		sphere = ObjFileLoader.loadObjFile("sphere.obj");
+		cylinder = ObjFileLoader.loadObjFile("cylinder.obj");
 		cone = ObjFileLoader.loadObjFile("cone.obj");
 		monkey = ObjFileLoader.loadObjFile("monkey.obj");
 		try {
@@ -147,7 +147,7 @@ public class BasicShapes {
 	    glRotatef(angle, 1.0f,2.0f,3.0f);
 	    glColor3f(1f, 0f, 0f);
 	    glScalef(0.5f,0.5f,0.5f);
-	    for(ObjFace face : sphere){
+	    for(ObjFace face : cylinder){
 	    	glBegin(GL_POLYGON);
     		{
     			if(face.vertices.size() == face.normals.size()){
